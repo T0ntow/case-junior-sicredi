@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Databricks
+.databricks/
+
+# IDE
+.vscode/
+
+# Dados e arquivos temporários
+*.log
+.DS_Store
