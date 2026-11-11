@@ -11,6 +11,60 @@ logger = logging.getLogger(__name__)
 BRONZE_SCHEMA = "workspace.bronze"
 SILVER_SCHEMA = "workspace.silver"
 
+
+
+def deduplicate_by_key(df: DataFrame, key: str) -> DataFrame:
+    """
+    Remove registros duplicados por uma chave de negócio.
+
+    Prioriza o registro com timestamp de processamento mais recente.
+    Em caso de empate, utiliza as demais colunas como critério
+    determinístico de desempate.
+    """
+
+    tie_break_columns = sorted(
+        column
+        for column in df.columns
+        if column not in {key, "timestamp_processamento"}
+    )
+
+    ordering = [
+        F.col("timestamp_processamento").desc_nulls_last()
+    ]
+
+    ordering.extend(
+        F.col(column).asc_nulls_first()
+        for column in tie_break_columns
+    )
+
+    window = (
+        Window
+        .partitionBy(key)
+        .orderBy(*ordering)
+    )
+
+    return (
+        df
+        .withColumn("row_number", F.row_number().over(window))
+        .filter(F.col("row_number") == 1)
+        .drop("row_number")
+    )
+
+
+def deduplicate_clients(df: DataFrame) -> DataFrame:
+    """Remove duplicidades pela chave de negócio id_cliente."""
+    return deduplicate_by_key(df, "id_cliente")
+
+
+def deduplicate_accounts(df: DataFrame) -> DataFrame:
+    """Remove duplicidades pela chave de negócio id_conta."""
+    return deduplicate_by_key(df, "id_conta")
+
+
+def deduplicate_transactions(df: DataFrame) -> DataFrame:
+    """Remove duplicidades pela chave de negócio id_transacao."""
+    return deduplicate_by_key(df, "id_transacao")
+
 def validate_cpf(cpf_column):
     """
     Valida o formato e os dígitos verificadores do CPF
@@ -115,29 +169,6 @@ def classify_clients(df: DataFrame):
     df_quarantine = df.filter(F.col("motivo_rejeicao").isNotNull())
 
     return df_valid, df_quarantine
-
-def deduplicate_clients(df: DataFrame) -> DataFrame:
-    """
-    Remove registros duplicados utilizando id_cliente
-    como chave de negócio.
-    """
-
-    window = (
-        Window
-        .partitionBy("id_cliente")
-        .orderBy(F.col("timestamp_processamento").desc())
-    )
-
-    return (
-        df
-        .withColumn(
-            "row_number",
-            F.row_number().over(window)
-        )
-        .filter(F.col("row_number") == 1)
-        .drop("row_number")
-    )
-
 
 def process_clients(spark):
     """
@@ -247,28 +278,6 @@ def classify_accounts(spark, df: DataFrame):
     df_quarantine = df.filter(F.col("motivo_rejeicao").isNotNull())
 
     return df_valid, df_quarantine
-
-def deduplicate_accounts(df: DataFrame) -> DataFrame:
-    """
-    Remove contas duplicadas utilizando id_conta
-    como chave de negócio.
-    """
-
-    window = (
-        Window
-        .partitionBy("id_conta")
-        .orderBy(F.col("timestamp_processamento").desc())
-    )
-
-    return (
-        df
-        .withColumn(
-            "row_number",
-            F.row_number().over(window)
-        )
-        .filter(F.col("row_number") == 1)
-        .drop("row_number")
-    )
 
 def process_accounts(spark):
     """
@@ -391,21 +400,7 @@ def classify_transactions(spark, df: DataFrame):
 
     return df_validas, df_quarentena
 
-def deduplicate_transactions(df: DataFrame) -> DataFrame:
-    """
-    Remove transações duplicadas pelo identificador.
-    Mantém um único registro por id_transacao.
-    """
-    window = Window.partitionBy("id_transacao").orderBy(
-        F.col("timestamp_processamento").desc()
-    )
 
-    return (
-        df
-        .withColumn("row_num", F.row_number().over(window))
-        .filter(F.col("row_num") == 1)
-        .drop("row_num")
-    )
 
 def process_transactions(spark):
     """
