@@ -10,7 +10,7 @@ from src.utils import (
 logger = logging.getLogger(__name__)
 
 RAW_PATH = "/Volumes/workspace/lakehouse/raw"
-TARGET_SCHEMA = "workspace.lakehouse"
+TARGET_SCHEMA = "workspace.bronze"
 
 FILES = {
     "clientes": "clientes.csv",

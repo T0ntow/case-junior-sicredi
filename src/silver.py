@@ -8,8 +8,8 @@ from src.utils import write_delta
 
 logger = logging.getLogger(__name__)
 
-TARGET_SCHEMA = "workspace.lakehouse"
-
+BRONZE_SCHEMA = "workspace.bronze"
+SILVER_SCHEMA = "workspace.silver"
 
 def validate_cpf(cpf_column):
     """
@@ -148,7 +148,7 @@ def process_clients(spark):
     logger.info("Iniciando processamento Silver de clientes.")
 
     # 1. Leitura da Bronze
-    df = spark.table(f"{TARGET_SCHEMA}.bronze_clientes")
+    df = spark.table(f"{BRONZE_SCHEMA}.bronze_clientes")
 
     # 2. Limpeza e padronização
     df_clean = clean_clients(df)
@@ -162,13 +162,13 @@ def process_clients(spark):
     # 5. Persistência das tabelas
     write_delta(
         df_silver,
-        table_name=f"{TARGET_SCHEMA}.silver_clientes",
+        table_name=f"{SILVER_SCHEMA}.silver_clientes",
         mode="overwrite"
     )
 
     write_delta(
         df_quarantine,
-        table_name=f"{TARGET_SCHEMA}.quarantine_clientes",
+        table_name=f"{SILVER_SCHEMA}.quarantine_clientes",
         mode="overwrite"
     )
 
@@ -210,7 +210,7 @@ def classify_accounts(spark, df: DataFrame):
 
     # Obtém os identificadores dos clientes válidos.
     df_clientes = (
-        spark.table(f"{TARGET_SCHEMA}.silver_clientes")
+        spark.table(f"{SILVER_SCHEMA}.silver_clientes")
         .select("id_cliente")
         .distinct()
     )
@@ -279,7 +279,7 @@ def process_accounts(spark):
     logger.info("Iniciando processamento Silver de contas.")
 
     # 1. Leitura da Bronze
-    df = spark.table(f"{TARGET_SCHEMA}.bronze_contas")
+    df = spark.table(f"{BRONZE_SCHEMA}.bronze_contas")
 
     # 2. Limpeza e padronização
     df_clean = clean_accounts(df)
@@ -293,13 +293,13 @@ def process_accounts(spark):
     # 5. Persistência das tabelas
     write_delta(
         df_silver,
-        table_name=f"{TARGET_SCHEMA}.silver_contas",
+        table_name=f"{SILVER_SCHEMA}.silver_contas",
         mode="overwrite"
     )
 
     write_delta(
         df_quarantine,
-        table_name=f"{TARGET_SCHEMA}.quarantine_contas",
+        table_name=f"{SILVER_SCHEMA}.quarantine_contas",
         mode="overwrite"
     )
 
@@ -361,7 +361,7 @@ def classify_transactions(spark, df: DataFrame):
     Classifica transações PIX válidas e inválidas.
     """
     df_contas = (
-        spark.table(f"{TARGET_SCHEMA}.silver_contas")
+        spark.table(f"{SILVER_SCHEMA}.silver_contas")
         .select("id_conta")
         .distinct()
         .withColumn("conta_encontrada", F.lit(True))
@@ -414,7 +414,7 @@ def process_transactions(spark):
     logger.info("Iniciando processamento das transações PIX.")
 
     df_bronze = spark.table(
-        f"{TARGET_SCHEMA}.bronze_transacoes_pix"
+        f"{BRONZE_SCHEMA}.bronze_transacoes_pix"
     )
 
     df_limpo = clean_transactions(df_bronze)
@@ -431,13 +431,13 @@ def process_transactions(spark):
 
     write_delta(
         df_silver,
-        f"{TARGET_SCHEMA}.silver_transacoes_pix",
+        f"{SILVER_SCHEMA}.silver_transacoes_pix",
         mode="overwrite"
     )
 
     write_delta(
         df_quarentena,
-        f"{TARGET_SCHEMA}.quarantine_transacoes_pix",
+        f"{SILVER_SCHEMA}.quarantine_transacoes_pix",
         mode="overwrite"
     )
 
