@@ -84,18 +84,28 @@ Consultas analíticas SQL
 
 ``` text
 case-junior-sicredi/
+├── data_sample/
+├── docs/
+│   ├──divergencias_massa_dados
+├── evidencias/
+│   ├── bronze.png
+│   ├── silver.png
+│   ├── gold.png
+│   └── job_execucao.png
+├── notebooks/
+│   ├── 00_validar_ambiente.ipynb
+│   ├── 01_pipeline_bronze.ipynb
+│   ├── 02_pipeline_silver.ipynb
+│   ├── 03_pipeline_gold.ipynb
+│   └── 04_consultas_analiticas.ipynb
 ├── src/
 │   ├── utils.py
 │   ├── bronze.py
 │   ├── silver.py
 │   └── gold.py
-├── notebooks/
-│   ├── 00_validar_ambiente.ipynb
-│   ├── 01_pipeline_bronze.ipynb
-│   ├── 01_pipeline_silver.ipynb
-│   ├── 02_pipeline_gold.ipynb
-│   └── 03_consultas_analiticas.ipynb
-└── README.md
+├── .gitignore
+├── README.md
+└── requirements.txt
 ```
 
 Os módulos em `src/` concentram as funções reutilizáveis de
@@ -207,6 +217,23 @@ acesso ao catálogo e ao Volume utilizados pelo projeto:
 Os módulos Python devem estar disponíveis no caminho de importação do
 repositório no Databricks.
 
+### 7.1 Execução automatizada com Databricks Workflows
+
+Além da execução individual dos notebooks, o projeto possui um Job configurado no Databricks Workflows, denominado `job_case_sicredi`.
+
+O Job automatiza a execução sequencial das seguintes tarefas:
+
+1. `validar_ambiente`: valida os recursos necessários para o processamento.
+2. `pipeline_bronze`: realiza a ingestão dos arquivos de origem.
+3. `pipeline_silver`: executa os tratamentos e validações de qualidade.
+4. `pipeline_gold`: constrói as tabelas analíticas.
+
+As tarefas possuem dependências entre si, garantindo que cada etapa seja iniciada somente após o sucesso da anterior.
+
+O Job utiliza compute Serverless e pode ser executado pela opção **Run now** na interface do Databricks.
+
+**Observação:** a configuração do Job pertence ao Workspace Databricks utilizado no desenvolvimento e não é exportada automaticamente pelo repositório Git. A execução também pode ser reproduzida manualmente seguindo a ordem dos notebooks.
+
 ## 8. Resultados da execução
 
 Volumes observados na execução de referência:
@@ -229,7 +256,7 @@ sintéticos utilizados durante o desenvolvimento.
 
 ## 9. Consultas analíticas SQL
 
-O notebook `03_consultas_analiticas.ipynb` contém cinco consultas:
+O notebook `04_consultas_analiticas.ipynb` contém cinco consultas:
 
 1.  **Top 10 clientes por volume financeiro:** ordenação decrescente do
     total transacionado.
@@ -255,3 +282,17 @@ transação. Esse resultado é esperado para os dados utilizados.
     no Volume indicado.
 -   As contagens apresentadas são resultados da amostra de referência e
     podem variar caso os arquivos de entrada sejam modificados.
+
+## 11. Evidências do projeto
+
+### Camada Bronze
+![Tabelas Bronze](evidencias/bronze.png)
+
+### Camada Silver
+![Tabelas Silver](evidencias/silver.png)
+
+### Camada Gold
+![Tabelas Gold](evidencias/gold.png)
+
+### Execução automatizada
+![Execução do Job](evidencias/job_execucao.png)
