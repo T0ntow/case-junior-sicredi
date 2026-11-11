@@ -61,38 +61,50 @@ def random_date(start_date, end_date):
     return start_date + timedelta(days=random.randint(0, days))
 
 # GERAÇÃO DE CPFs
-def generate_fake_cpf():
-    """Gera CPF fictício com 11 dígitos."""
+def generate_invalid_cpf():
+    """Gera um CPF com 11 dígitos, mas com DV inválido."""
+
+    cpf = generate_valid_cpf()
+
+    invalid_digit = (int(cpf[-1]) + 1) % 10
+
+    return cpf[:-1] + str(invalid_digit)
+
+
+def generate_valid_cpf():
+    """
+    Gera um CPF fictício com dígitos verificadores válidos.
+    """
+
+    import random
+
     digits = [random.randint(0, 9) for _ in range(9)]
 
-    total = sum(
+    # Primeiro dígito verificador
+    first_sum = sum(
         digit * weight
         for digit, weight in zip(digits, range(10, 1, -1))
     )
 
-    remainder = (total * 10) % 11
-    first_check = 0 if remainder == 10 else remainder
+    first_remainder = first_sum % 11
+    first_digit = 0 if first_remainder < 2 else 11 - first_remainder
 
-    digits.append(first_check)
+    digits.append(first_digit)
 
-    total = sum(
+    # Segundo dígito verificador
+    second_sum = sum(
         digit * weight
         for digit, weight in zip(digits, range(11, 1, -1))
     )
 
-    remainder = (total * 10) % 11
-    second_check = 0 if remainder == 10 else remainder
+    second_remainder = second_sum % 11
+    second_digit = 0 if second_remainder < 2 else 11 - second_remainder
 
-    digits.append(second_check)
-
-    # Altera o último dígito para invalidar o checksum.
-    digits[-1] = (digits[-1] + 1) % 10
+    digits.append(second_digit)
 
     return "".join(map(str, digits))
 
-
 # GERAÇÃO DE CLIENTES
-
 def generate_clients():
     clients = []
 
@@ -132,8 +144,12 @@ def generate_clients():
             date(2005, 12, 31)
         )
 
-        # CPFs fictícios com 11 dígitos numéricos.
-        cpf = generate_fake_cpf()
+        # Geração de CPFs fictícios.
+        cpf = generate_valid_cpf()
+
+        # Alguns CPFs possuem 11 dígitos, mas DV inválido.
+        if i in [7, 14, 21]:
+            cpf = generate_invalid_cpf()
 
         clients.append({
             "id_cliente": i,

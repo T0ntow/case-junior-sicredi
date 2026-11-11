@@ -1,32 +1,32 @@
 id_cliente,nome,cpf,data_nascimento,cidade,estado
-1,  Ana Silva  ,33218196001,1984-09-03,Vitória da Conquista,BA
-2,Carlos   Santos ,89083863787,1980-11-14,Rio de Janeiro,RJ
+1,  Ana Silva  ,33218196000,1984-09-03,Vitória da Conquista,BA
+2,Carlos   Santos ,89083863786,1980-11-14,Rio de Janeiro,RJ
 3,Juliana Pereira,12345,1974-04-28,Vitória da Conquista,BA
 4,Carlos Costa,ABC12345678,1983-09-24,Curitiba,PR
 5,Bruno Costa,123456789012,1977-04-01,Porto Alegre,RS
-6,Camila Costa,53419283262,1993-03-18,São Paulo,SP
-7,Camila Rodrigues,50305641361,1979-09-14,Belo Horizonte,MG
-8,Bruno Lima,76724238863,1979-01-28,Curitiba,PR
-9,Pedro Lima,53287101260,1995-10-31,Recife,PE
-10,Gabriel Oliveira,66978480143,1965-09-12,Recife,PE
-11,Gabriel Nascimento,14627048247,1990-07-08,Belo Horizonte,MG
-12,Rafael Santos,93252880955,2005-07-18,Belo Horizonte,MG
-13,Lucas Almeida,54303911748,1970-01-13,Vitória da Conquista,BA
-14,Larissa Santos,27824896316,1971-04-13,Brasília,DF
-15,Bruno Nascimento,65787133103,1987-12-19,Rio de Janeiro,RJ
-16,Lucas Silva,93010310511,1980-08-23,Porto Alegre,RS
-17,Carlos Nascimento,73829973757,1984-12-25,Rio de Janeiro,RJ
-18,Matheus Rodrigues,16566701002,1968-06-17,Rio de Janeiro,RJ
-19,Fernanda Costa,33872624777,1982-04-22,Salvador,BA
-20,João Santos,08013267700,1968-10-13,Fortaleza,CE
-21,João Rodrigues,60647468744,1974-10-08,Vitória da Conquista,BA
-22,Mariana Souza,09805009743,1979-07-13,Belo Horizonte,MG
-23,Rafael Nascimento,81219136167,1965-02-06,São Paulo,SP
-24,Bruno Lima,91699854301,1963-07-26,Rio de Janeiro,RJ
-25,Gabriel Costa,62475107996,1983-10-30,Rio de Janeiro,RJ
-26,Juliana Santos,84251354274,1979-02-14,Salvador,BA
-27,Camila Nascimento,84124118202,1960-09-13,Belo Horizonte,MG
-28,Pedro Pereira,53487401607,1978-11-23,Porto Alegre,RS
-29,Larissa Pereira,52427868095,1960-04-26,Vitória da Conquista,BA
-30,Carlos Santos,59826204596,1963-03-26,São Paulo,SP
-6,  Camila Costa  ,53419283262,1993-03-18,São Paulo,SP
+6,Camila Costa,53419283261,1993-03-18,São Paulo,SP
+7,Camila Rodrigues,95376724256,1979-09-14,Belo Horizonte,MG
+8,João Nascimento,96965328738,1983-07-28,Brasília,DF
+9,Carlos Silva,26916697857,1973-09-17,Salvador,BA
+10,Pedro Nascimento,84514627070,1970-04-11,Vitória da Conquista,BA
+11,Beatriz Pereira,81489325220,1976-01-11,Brasília,DF
+12,Rafael Nascimento,70154303984,1989-01-29,Vitória da Conquista,BA
+13,Carlos Santos,82278248979,1966-03-17,Fortaleza,CE
+14,Fernanda Souza,15098393052,1978-01-17,Brasília,DF
+15,Carlos Silva,05183473897,1966-01-17,Rio de Janeiro,RJ
+16,Mariana Lima,37631165670,2002-05-28,Porto Alegre,RS
+17,Fernanda Almeida,06513338735,1968-10-29,Vitória da Conquista,BA
+18,Mariana Rodrigues,73178108009,1984-12-27,São Paulo,SP
+19,Carlos Souza,77360260680,1996-06-17,São Paulo,SP
+20,Pedro Almeida,87234309829,1997-12-13,Belo Horizonte,MG
+21,Ana Costa,19136193977,1964-07-01,Vitória da Conquista,BA
+22,Juliana Silva,69985435303,1967-05-10,Porto Alegre,RS
+23,Pedro Rodrigues,75107991122,1986-11-30,São Paulo,SP
+24,Rafael Souza,25135427899,1983-10-17,Brasília,DF
+25,Beatriz Pereira,84124118201,1960-09-13,Porto Alegre,RS
+26,Pedro Pereira,53487401606,1978-11-23,Porto Alegre,RS
+27,Larissa Pereira,52427868094,1960-04-26,Vitória da Conquista,BA
+28,Carlos Santos,59826204595,1963-03-26,São Paulo,SP
+29,Bruno Silva,31586923250,1978-11-05,Curitiba,PR
+30,Matheus Oliveira,25634216087,1962-03-23,Recife,PE
+6,  Camila Costa  ,53419283261,1993-03-18,São Paulo,SP
